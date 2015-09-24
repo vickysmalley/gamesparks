@@ -6,6 +6,8 @@
 //
 // ====================================================================================================
 
+// TODO: Make into a challenge event
+
 // Get challengeId attribute
 var challengeId = Spark.getData().challengeId;
 
@@ -38,28 +40,28 @@ var result = challenge.getPrivateData(privateDataKey);
 if(result == null)
 {
     // This is the first deckChosen message we have received
-    Spark.getLog().debug("Received first deckChosen message");
+   // Spark.getLog().debug("Received first deckChosen message");
     // Set the player id
     challenge.setPrivateData(privateDataKey, playerId);
 }
 else if(result == playerId)
 {
-    Spark.getLog().error("This is the second deckChosen message from " + playerId)
+    //Spark.getLog().error("This is the second deckChosen message from " + playerId)
 }
 else if(result == opponentId)
 {
     // This is the second deckChosen message we have received
-    Spark.getLog().debug("Received second deckChosen message");
+    //Spark.getLog().debug("Received second deckChosen message");
     
     // Send decksComplete message to both players
     var opponent = Spark.loadPlayer(opponentId)
     Spark.sendMessageExt({ "challengeId" : challengeId }, "decksComplete", [Spark.getPlayer(), opponent])
-    Spark.getLog().debug("Sent decksComplete message");
+    //Spark.getLog().debug("Sent decksComplete message");
     
     // Set data completed
     challenge.setPrivateData(privateDataKey, "completed");
 }
 else
 {
-    Spark.getLog().debug("Error: unexpected result in deckChosen " + result)
+    Spark.getLog().error("Unexpected result in deckChosen " + result)
 }
